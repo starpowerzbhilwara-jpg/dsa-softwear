@@ -7,12 +7,10 @@ const app = express();
 
 // Middlewares - Updated CORS configuration for production & local development
 app.use(cors({
-  origin: ['https://finworld.online', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
 app.use(express.json());
 
 // Static Files Serving: Root aur Public dono folder ko serve karega
