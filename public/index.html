@@ -521,7 +521,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add New Sub-Agent / Team Member</h3>
-                <button onclick="closeModal('modal-dsa-add-user')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-dsa-add-user')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleDSACreateUser(event)" class="space-y-3">
                 <div>
@@ -564,7 +564,7 @@
                     <h3 class="font-bold text-base text-slate-800" id="portal-lead-title">Lead Capture Form</h3>
                     <p class="text-[11px] text-sky-600 font-medium">Mandatory lead tracking before bank portal redirection</p>
                 </div>
-                <button onclick="closeModal('modal-portal-lead')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-portal-lead')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handlePortalLeadSubmit(event)" class="space-y-3">
                 <input type="hidden" id="portal-target-bank">
@@ -604,7 +604,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Record Bank Payout & Margin Entry</h3>
-                <button onclick="closeModal('modal-add-account-entry')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-add-account-entry')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleSaveAccountEntry(event)" class="space-y-3">
                 <input type="text" id="acc-bank-name" placeholder="Bank / NBFC Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -632,7 +632,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Change Security Password</h3>
-                <button onclick="closeModal('modal-change-password')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-change-password')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleChangePassword(event)" class="space-y-3">
                 <input type="password" id="pass-current" placeholder="Current Password" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -651,7 +651,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Online Customer Application</h3>
-                <button onclick="closeModal('modal-cust-apply')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-cust-apply')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleCustomerApply(event)" class="space-y-3">
                 <input type="text" id="cust-apply-name" placeholder="Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -676,7 +676,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Join as DSA Partner</h3>
-                <button onclick="closeModal('modal-dsa-apply')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-dsa-apply')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleDSAApply(event)" class="space-y-3">
                 <input type="text" id="dsa-apply-name" placeholder="Full Name / Agency" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -696,7 +696,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add New Lead</h3>
-                <button onclick="closeModal('modal-add-lead')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-add-lead')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleAddLead(event)" class="space-y-3">
                 <input type="text" id="lead-name" placeholder="Customer Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -717,7 +717,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add DSA Commission Payout</h3>
-                <button onclick="closeModal('modal-add-payout')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-add-payout')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleAddPayout(event)" class="space-y-3">
                 <input type="text" id="payout-dsa" placeholder="DSA Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -738,7 +738,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add Telecalling Lead</h3>
-                <button onclick="closeModal('modal-add-calling')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-add-calling')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleAddCalling(event)" class="space-y-3">
                 <input type="text" id="calling-name" placeholder="Customer Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -764,7 +764,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add Sales Manager</h3>
-                <button onclick="closeModal('modal-add-sm')" class="text-slate-400 hover:text-slate-600">&times;</button>
+                <button type="button" onclick="closeModal('modal-add-sm')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
             </div>
             <form onsubmit="handleAddSM(event)" class="space-y-3">
                 <input type="text" id="sm-name" placeholder="Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -787,11 +787,9 @@
 
     <!-- JAVASCRIPT ENGINE & LOGIC -->
     <script>
-        // Granular Role-Based Access Matrix
-        // Note: 'sec-accounts' (Bank Payouts received) is strictly restricted to 'admin' role only.
         const ROLE_PERMISSIONS = {
             admin: ['sec-dashboard', 'sec-leads', 'sec-dsa-subusers', 'sec-accounts', 'sec-dsa-approval', 'sec-dsa-portal', 'sec-payouts', 'sec-invoices', 'sec-calling', 'sec-users', 'sec-sm', 'sec-products', 'sec-bank-config'],
-            dsa: ['sec-dashboard', 'sec-leads', 'sec-dsa-subusers', 'sec-dsa-portal', 'sec-payouts', 'sec-calling', 'sec-products'], // DSA can create sub-agents/users to keep business running
+            dsa: ['sec-dashboard', 'sec-leads', 'sec-dsa-subusers', 'sec-dsa-portal', 'sec-payouts', 'sec-calling', 'sec-products'],
             agent: ['sec-dashboard', 'sec-leads', 'sec-dsa-portal', 'sec-calling', 'sec-products'],
             staff: ['sec-dashboard', 'sec-leads', 'sec-dsa-portal', 'sec-calling']
         };
@@ -801,15 +799,15 @@
             return ROLE_PERMISSIONS[role].includes(featureId);
         }
 
-        // Global State
-        let appData = {
+        // Persistent State Management via LocalStorage
+        let defaultAppData = {
             currentUser: null,
             leads: [
                 { id: 1, name: "Rahul Verma", phone: "9876543210", product: "Personal Loan", city: "Mumbai", bank: "HDFC Bank", createdBy: "Apex Financial (DSA)", status: "In Progress" },
                 { id: 2, name: "Priya Sharma", phone: "9123456789", product: "Home Loan", city: "Delhi", bank: "ICICI Bank", createdBy: "Agent Rahul", status: "Approved" }
             ],
             dsaApprovals: [
-                { id: 101, name: "Apex Financial Solutions", phone: "9811223344", city: "Jaipur", kyc: "KYC Verified [Govt ID Redacted]", bank: "HDFC - 9988776655", status: "Pending" }
+                { id: 101, name: "Apex Financial Solutions", phone: "9811223344", city: "Jaipur", kyc: "KYC Verified", bank: "HDFC - 9988776655", status: "Pending" }
             ],
             payouts: [
                 { id: 1, date: "2026-07-25", dsa: "Apex Financial Solutions", bank: "HDFC Bank", category: "PL", customer: "Rahul Verma", disbursed: 500000, payout: 7500, status: "Paid" }
@@ -836,7 +834,12 @@
             ]
         };
 
-        // Hide Admin-Only UI Elements for DSA / Agents
+        let appData = JSON.parse(localStorage.getItem("finworld_app_data")) || defaultAppData;
+
+        function saveAppData() {
+            localStorage.setItem("finworld_app_data", JSON.stringify(appData));
+        }
+
         function applyRoleUIAdjustments() {
             if (!appData.currentUser) return;
             const isAdmin = appData.currentUser.role === 'admin';
@@ -902,8 +905,15 @@
             }, 3000);
         }
 
-        function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
-        function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+        function openModal(id) { 
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove("hidden"); 
+        }
+        
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add("hidden"); 
+        }
 
         function showSection(sectionId) {
             if (appData.currentUser && !isFeatureAccessible(appData.currentUser.role, sectionId)) {
@@ -920,84 +930,29 @@
             if (navBtn) navBtn.classList.add("active-nav");
         }
 
-        async function handleLogin(e) {
+        function handleLogin(e) {
             e.preventDefault();
             const userid = document.getElementById("login-userid").value;
             const pass = document.getElementById("login-password").value;
+            const selectedRole = document.getElementById("login-role").value;
 
-            try {
-                const response = await fetch('https://finworld-backend.onrender.com/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userid, pass })
-                });
-                const data = await response.json();
+            const foundUser = appData.users.find(u => u.userid === userid && u.pass === pass);
+            if (foundUser || userid === "admin") {
+                appData.currentUser = foundUser || { userid: "admin", name: "Master Admin", role: selectedRole, pass: "admin123", parentDSA: "System Root" };
 
-                if (data.success) {
-                    appData.currentUser = data.user;
-                    document.getElementById("view-login").classList.add("hidden");
-                    document.getElementById("main-sidebar").classList.remove("hidden");
-                    
-                    const sessionBar = document.getElementById("user-session-bar");
-                    sessionBar.classList.remove("hidden");
-                    document.getElementById("session-user-name").innerText = appData.currentUser.name;
-                    document.getElementById("session-user-role").innerText = appData.currentUser.role;
+                document.getElementById("view-login").classList.add("hidden");
+                document.getElementById("main-sidebar").classList.remove("hidden");
+                
+                const sessionBar = document.getElementById("user-session-bar");
+                sessionBar.classList.remove("hidden");
+                document.getElementById("session-user-name").innerText = appData.currentUser.name;
+                document.getElementById("session-user-role").innerText = appData.currentUser.role;
 
-                    await fetchAllDataFromBackend();
-                    updateNavigationAccess();
-                    showToast("Logged in successfully as " + appData.currentUser.name, "success");
-                } else {
-                    // Local fallback logic
-                    const foundUser = appData.users.find(u => u.userid === userid && u.pass === pass);
-                    if (foundUser || userid === "admin") {
-                        const role = document.getElementById("login-role").value;
-                        appData.currentUser = foundUser || { userid: "admin", name: "Master Admin", role: role, pass: "admin123", parentDSA: "System Root" };
-
-                        document.getElementById("view-login").classList.add("hidden");
-                        document.getElementById("main-sidebar").classList.remove("hidden");
-                        
-                        const sessionBar = document.getElementById("user-session-bar");
-                        sessionBar.classList.remove("hidden");
-                        document.getElementById("session-user-name").innerText = appData.currentUser.name;
-                        document.getElementById("session-user-role").innerText = appData.currentUser.role;
-
-                        renderAllData();
-                        updateNavigationAccess();
-                        showToast("Logged in successfully as " + appData.currentUser.name, "success");
-                    } else {
-                        showToast(data.message || "Invalid User ID or Password!", "error");
-                    }
-                }
-            } catch (err) {
-                // Fallback to local user array if backend fails
-                const foundUser = appData.users.find(u => u.userid === userid && u.pass === pass);
-                if (foundUser || userid === "admin") {
-                    const role = document.getElementById("login-role").value;
-                    appData.currentUser = foundUser || { userid: "admin", name: "Master Admin", role: role, pass: "admin123", parentDSA: "System Root" };
-
-                    document.getElementById("view-login").classList.add("hidden");
-                    document.getElementById("main-sidebar").classList.remove("hidden");
-                    
-                    const sessionBar = document.getElementById("user-session-bar");
-                    sessionBar.classList.remove("hidden");
-                    document.getElementById("session-user-name").innerText = appData.currentUser.name;
-                    document.getElementById("session-user-role").innerText = appData.currentUser.role;
-
-                    renderAllData();
-                    updateNavigationAccess();
-                    showToast("Logged in successfully as " + appData.currentUser.name, "success");
-                } else {
-                    showToast("Server connection error & invalid local credentials!", "error");
-                }
-            }
-        }
-
-        async function fetchAllDataFromBackend() {
-            try {
-                // Endpoint sync optional
                 renderAllData();
-            } catch (err) {
-                console.log("Error fetching data", err);
+                updateNavigationAccess();
+                showToast("Logged in successfully as " + appData.currentUser.name, "success");
+            } else {
+                showToast("Invalid User ID or Password!", "error");
             }
         }
 
@@ -1032,6 +987,7 @@
                 status: "Active"
             });
 
+            saveAppData();
             closeModal("modal-dsa-add-user");
             e.target.reset();
             renderAllData();
@@ -1051,6 +1007,7 @@
                 createdBy: creator,
                 status: "In Progress"
             });
+            saveAppData();
             closeModal("modal-add-lead");
             e.target.reset();
             renderAllData();
@@ -1064,7 +1021,6 @@
             const customer = document.getElementById("payout-cust").value;
             const amount = Number(document.getElementById("payout-amount").value);
             const earned = Number(document.getElementById("payout-earned").value);
-
             const today = new Date().toISOString().split('T')[0];
 
             appData.payouts.unshift({
@@ -1079,6 +1035,7 @@
                 status: "Paid"
             });
 
+            saveAppData();
             closeModal("modal-add-payout");
             e.target.reset();
             renderAllData();
@@ -1105,6 +1062,7 @@
                 status: "Settled"
             });
 
+            saveAppData();
             closeModal("modal-add-account-entry");
             e.target.reset();
             renderAllData();
@@ -1113,7 +1071,6 @@
 
         function handleChangePassword(e) {
             e.preventDefault();
-            const curr = document.getElementById("pass-current").value;
             const newP = document.getElementById("pass-new").value;
             const confP = document.getElementById("pass-confirm").value;
 
@@ -1128,6 +1085,7 @@
                 if (userObj) userObj.pass = newP;
             }
 
+            saveAppData();
             closeModal("modal-change-password");
             e.target.reset();
             showToast("Password updated successfully!", "success");
@@ -1135,22 +1093,18 @@
 
         function handleCustomerApply(e) {
             e.preventDefault();
-            const name = document.getElementById("cust-apply-name").value;
-            const phone = document.getElementById("cust-apply-phone").value;
-            const product = document.getElementById("cust-apply-product").value;
-            const city = document.getElementById("cust-apply-city").value;
-
             appData.leads.unshift({
                 id: Date.now(),
-                name: name,
-                phone: phone,
-                product: product,
-                city: city,
+                name: document.getElementById("cust-apply-name").value,
+                phone: document.getElementById("cust-apply-phone").value,
+                product: document.getElementById("cust-apply-product").value,
+                city: document.getElementById("cust-apply-city").value,
                 bank: "Pending Allocation",
                 createdBy: "Public Customer Apply",
                 status: "New Application"
             });
 
+            saveAppData();
             closeModal("modal-cust-apply");
             e.target.reset();
             renderAllData();
@@ -1159,20 +1113,17 @@
 
         function handleDSAApply(e) {
             e.preventDefault();
-            const name = document.getElementById("dsa-apply-name").value;
-            const phone = document.getElementById("dsa-apply-phone").value;
-            const city = document.getElementById("dsa-apply-city").value;
-
             appData.dsaApprovals.unshift({
                 id: Date.now(),
-                name: name,
-                phone: phone,
-                city: city,
+                name: document.getElementById("dsa-apply-name").value,
+                phone: document.getElementById("dsa-apply-phone").value,
+                city: document.getElementById("dsa-apply-city").value,
                 kyc: "Pending Verification",
                 bank: "Pending",
                 status: "Pending"
             });
 
+            saveAppData();
             closeModal("modal-dsa-apply");
             e.target.reset();
             renderAllData();
@@ -1181,24 +1132,21 @@
 
         function handlePortalLeadSubmit(e) {
             e.preventDefault();
-            const name = document.getElementById("portal-cust-name").value;
-            const phone = document.getElementById("portal-cust-phone").value;
-            const product = document.getElementById("portal-cust-product").value;
-            const city = document.getElementById("portal-cust-city").value;
             const bank = document.getElementById("portal-target-bank").value;
             const url = document.getElementById("portal-target-url").value;
 
             appData.leads.unshift({
                 id: Date.now(),
-                name: name,
-                phone: phone,
-                product: product,
-                city: city,
+                name: document.getElementById("portal-cust-name").value,
+                phone: document.getElementById("portal-cust-phone").value,
+                product: document.getElementById("portal-cust-product").value,
+                city: document.getElementById("portal-cust-city").value,
                 bank: bank,
                 createdBy: appData.currentUser ? `${appData.currentUser.name} (Portal Link)` : "Bank Portal Link",
                 status: "Redirected to Bank"
             });
 
+            saveAppData();
             closeModal("modal-portal-lead");
             e.target.reset();
             renderAllData();
@@ -1235,6 +1183,7 @@
                 showToast("New Bank Master Saved!", "success");
             }
 
+            saveAppData();
             e.target.reset();
             renderAllData();
         }
@@ -1249,6 +1198,7 @@
                 status: document.getElementById("calling-status").value,
                 remarks: document.getElementById("calling-remarks").value
             });
+            saveAppData();
             closeModal("modal-add-calling");
             e.target.reset();
             renderAllData();
@@ -1264,6 +1214,7 @@
                 city: document.getElementById("sm-city").value,
                 designation: document.getElementById("sm-designation").value
             });
+            saveAppData();
             closeModal("modal-add-sm");
             e.target.reset();
             renderAllData();
@@ -1311,6 +1262,7 @@
                     city: app.city,
                     status: "Active"
                 });
+                saveAppData();
                 renderAllData();
                 showToast(`DSA Approved! Login ID: ${dsaUserId}`, "success");
             }
