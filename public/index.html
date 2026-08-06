@@ -7,10 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .bank-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%); }
         .active-nav { background-color: #0369a1; border-left: 4px solid #38bdf8; }
+        .upload-dropzone { border: 2px dashed #cbd5e1; transition: all 0.3s ease; }
+        .upload-dropzone:hover, .upload-dropzone.dragover { border-color: #0284c7; background-color: #f0f9ff; }
         @media print {
             body * { visibility: hidden; }
             #printable-invoice, #printable-invoice * { visibility: visible; }
@@ -176,8 +180,6 @@
                         <h3 class="text-2xl font-extrabold text-amber-600 mt-2" id="stat-payouts">₹0</h3>
                     </div>
                 </div>
-
-                <!-- Metrics Grid -->
                 <div class="metrics-grid grid grid-cols-1 md:grid-cols-4 gap-4 my-6">
                     <div class="card bg-white p-5 rounded-xl border border-slate-200 shadow-sm admin-only">
                         <span class="text-xs font-bold text-slate-500 uppercase">Bank Payout Received (Admin Only)</span>
@@ -203,11 +205,10 @@
                 <div class="flex justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                     <div>
                         <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-users-gear text-indigo-600 mr-2"></i>My Sub-Agents & Team Members</h3>
-                        <p class="text-xs text-slate-500">Create & Manage field agents and sub-users under your DSA franchise to keep business running smoothly</p>
+                        <p class="text-xs text-slate-500">Create & Manage field agents and sub-users under your DSA franchise</p>
                     </div>
                     <button onclick="openModal('modal-dsa-add-user')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl">+ Create Agent / Sub-User</button>
                 </div>
-
                 <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 text-xs text-slate-600 uppercase">
@@ -226,36 +227,31 @@
                 </div>
             </div>
 
-            <!-- ACCOUNTS & MARGINS SECTION (ADMIN ONLY - STRICTLY HIDDEN FROM DSA/STAFF) -->
+            <!-- ACCOUNTS & MARGINS SECTION (ADMIN ONLY) -->
             <div id="sec-accounts" class="content-sec hidden space-y-6 admin-only">
                 <div class="flex justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                     <div>
                         <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-wallet text-emerald-600 mr-2"></i>Bank Accounts & Margin Overview (Master Admin Confidential)</h3>
-                        <p class="text-xs text-slate-500">Confidential ledger: Direct Bank Payouts received are strictly restricted to Master Admin view only.</p>
+                        <p class="text-xs text-slate-500">Confidential ledger: Direct Bank Payouts received are strictly restricted to Master Admin.</p>
                     </div>
                     <button onclick="openModal('modal-add-account-entry')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl">+ Record Bank Payout Entry</button>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-500">
                         <p class="text-xs font-bold text-slate-500 uppercase">Total Bank Payout Received (Admin Only)</p>
                         <h3 class="text-2xl font-extrabold text-emerald-600 mt-1" id="acc-total-bank">₹0</h3>
-                        <p class="text-[11px] text-slate-400 mt-1">Directly credited from Banks / NBFCs</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-purple-500">
                         <p class="text-xs font-bold text-slate-500 uppercase">Total DSA Commissions Disbursed</p>
                         <h3 class="text-2xl font-extrabold text-purple-600 mt-1" id="acc-total-dsa">₹0</h3>
-                        <p class="text-[11px] text-slate-400 mt-1">Processed to DSA Partners</p>
                     </div>
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-sky-500">
                         <p class="text-xs font-bold text-slate-500 uppercase">Company Net Profit Margin</p>
                         <h3 class="text-2xl font-extrabold text-sky-600 mt-1" id="acc-total-margin">₹0</h3>
-                        <p class="text-[11px] text-slate-400 mt-1">Net Retained Profit</p>
                     </div>
                 </div>
-
                 <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                    <div class="p-4 bg-slate-50 border-b border-slate-200 font-bold text-sm text-slate-700">Detailed Bank vs DSA Accounts Ledger (Admin Exclusive)</div>
+                    <div class="p-4 bg-slate-50 border-b border-slate-200 font-bold text-sm text-slate-700">Detailed Bank vs DSA Accounts Ledger</div>
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-100 text-xs text-slate-600 uppercase">
                             <tr>
@@ -327,7 +323,7 @@
             <div id="sec-dsa-portal" class="content-sec hidden space-y-6">
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-slate-800 text-lg mb-1"><i class="fa-solid fa-building-columns text-emerald-600 mr-2"></i>Direct Bank Partner Portals & UTM Links</h3>
-                    <p class="text-xs text-slate-500 mb-4">Clicking on any portal will open the mandatory customer tracking form before redirection.</p>
+                    <p class="text-xs text-slate-500 mb-4">Clicking on any portal will open mandatory customer tracking before redirection.</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="grid-dsa-banks"></div>
                 </div>
             </div>
@@ -397,21 +393,44 @@
                 </div>
             </div>
 
-            <!-- CALLING DATA MANAGEMENT -->
+            <!-- CALLING DATA MANAGEMENT (UPDATED WITH DRAG & DROP / AUTO-FETCH) -->
             <div id="sec-calling" class="content-sec hidden space-y-6">
                 <div class="flex justify-between items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-headset text-rose-500 mr-2"></i>Telecalling Data Management</h3>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-headset text-rose-500 mr-2"></i>Telecalling Data Management (Smart Auto-Fetch & Bulk Upload)</h3>
+                        <p class="text-xs text-slate-500">Drag & drop any file (Excel, Word, CSV, TXT) or paste raw data. System auto-extracts Name, Address, Employment Type & Mobile Number and cleans extra noise.</p>
+                    </div>
                     <button onclick="openModal('modal-add-calling')" class="bg-rose-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl">+ Add Calling Lead</button>
                 </div>
+
+                <!-- DRAG & UPLOAD BULK ZONE FOR CALLING DATA -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="font-bold text-xs text-slate-700 uppercase"><i class="fa-solid fa-cloud-arrow-up text-rose-500 mr-1.5"></i> Bulk Smart Upload (Excel / Word / CSV / Text)</h4>
+                    <div id="calling-dropzone" class="upload-dropzone p-8 rounded-2xl text-center cursor-pointer flex flex-col items-center justify-center bg-slate-50" ondragover="handleDragOver(event, 'calling')" ondragleave="handleDragLeave(event, 'calling')" ondrop="handleFileDrop(event, 'calling')" onclick="document.getElementById('calling-file-input').click()">
+                        <i class="fa-solid fa-file-arrow-up text-3xl text-rose-500 mb-2"></i>
+                        <p class="text-xs font-bold text-slate-700">Drag & Drop your Excel, Word or CSV file here, or <span class="text-rose-600 underline">Browse File</span></p>
+                        <p class="text-[10px] text-slate-400 mt-1">Auto-extracts: Customer Name | Address/Location | Employment Type | Mobile Number (Extra noise auto-deleted)</p>
+                        <input type="file" id="calling-file-input" class="hidden" accept=".xlsx, .xls, .csv, .doc, .docx, .txt" onchange="handleFileSelect(event, 'calling')">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Or Paste Raw Bulk Data (Any Format)</label>
+                        <textarea id="calling-raw-text" rows="3" placeholder="Paste text here e.g. 'Mr. Rahul Verma, Jaipur, Salaried, 9876543210 - Extra remarks to ignore...'" class="w-full border rounded-xl p-3 text-xs outline-none bg-slate-50"></textarea>
+                        <div class="flex justify-end mt-2">
+                            <button onclick="processRawCallingData()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2 rounded-xl">Auto-Extract & Import Calling Data</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 text-xs text-slate-600 uppercase">
                             <tr>
                                 <th class="p-3">Customer Name</th>
-                                <th class="p-3">Phone</th>
-                                <th class="p-3">Caller</th>
+                                <th class="p-3">Mobile Number</th>
+                                <th class="p-3">Address / Location</th>
+                                <th class="p-3">Employment Type</th>
+                                <th class="p-3">Caller Agent</th>
                                 <th class="p-3">Status</th>
-                                <th class="p-3">Remarks</th>
                             </tr>
                         </thead>
                         <tbody id="table-calling" class="divide-y divide-slate-100"></tbody>
@@ -441,18 +460,37 @@
                 </div>
             </div>
 
-            <!-- SALES MANAGER MANAGEMENT -->
+            <!-- SALES MANAGER MANAGEMENT (UPDATED WITH DRAG & DROP / AUTO-FETCH) -->
             <div id="sec-sm" class="content-sec hidden space-y-6">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-5 rounded-2xl border border-slate-200 shadow-sm gap-4">
                     <div>
-                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-user-tie text-blue-600 mr-2"></i>Sales Managers & Hierarchy Directory</h3>
-                        <p class="text-xs text-slate-500">All India Sales Hierarchy (SM, ZSM, RAM, ASM) with Location Filters</p>
+                        <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-user-tie text-blue-600 mr-2"></i>Sales Managers & Hierarchy Directory (Smart Auto-Fetch)</h3>
+                        <p class="text-xs text-slate-500">All India Sales Hierarchy (SM, ZSM, RAM, ASM) with bulk upload & auto-extraction setup</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <input type="text" id="sm-search-location" oninput="filterSMByLocation()" placeholder="Filter by City..." class="border rounded-xl px-3 py-2 text-xs w-48 outline-none">
                         <button onclick="openModal('modal-add-sm')" class="bg-blue-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl admin-only">+ Add Single SM</button>
                     </div>
                 </div>
+
+                <!-- DRAG & UPLOAD BULK ZONE FOR SALES MANAGERS -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="font-bold text-xs text-slate-700 uppercase"><i class="fa-solid fa-cloud-arrow-up text-blue-500 mr-1.5"></i> Bulk Upload Sales Managers (Excel / Word / CSV / Text)</h4>
+                    <div id="sm-dropzone" class="upload-dropzone p-8 rounded-2xl text-center cursor-pointer flex flex-col items-center justify-center bg-slate-50" ondragover="handleDragOver(event, 'sm')" ondragleave="handleDragLeave(event, 'sm')" ondrop="handleFileDrop(event, 'sm')" onclick="document.getElementById('sm-file-input').click()">
+                        <i class="fa-solid fa-file-arrow-up text-3xl text-blue-500 mb-2"></i>
+                        <p class="text-xs font-bold text-slate-700">Drag & Drop file here, or <span class="text-blue-600 underline">Browse File</span></p>
+                        <p class="text-[10px] text-slate-400 mt-1">Auto-extracts: Name | Product | Bank Name | Mobile Number | Location | City | State | Mail ID</p>
+                        <input type="file" id="sm-file-input" class="hidden" accept=".xlsx, .xls, .csv, .doc, .docx, .txt" onchange="handleFileSelect(event, 'sm')">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Or Paste Raw Bulk Data for Sales Managers</label>
+                        <textarea id="sm-raw-text" rows="3" placeholder="Paste text here e.g. 'Sanjay Mehta, Personal Loan, HDFC Bank, 9822334455, Mumbai, Maharashtra, sanjay@finworld.com - Extra note...'" class="w-full border rounded-xl p-3 text-xs outline-none bg-slate-50"></textarea>
+                        <div class="flex justify-end mt-2">
+                            <button onclick="processRawSMData()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2 rounded-xl">Auto-Extract & Import SM Data</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="grid-sm-cards"></div>
             </div>
 
@@ -515,48 +553,29 @@
     </div>
 
     <!-- MODALS SECTION -->
-
-    <!-- Modal: DSA Create Sub-Agent / User -->
     <div id="modal-dsa-add-user" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add New Sub-Agent / Team Member</h3>
-                <button type="button" onclick="closeModal('modal-dsa-add-user')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-dsa-add-user')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleDSACreateUser(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Agent Full Name</label>
-                    <input type="text" id="sub-agent-name" placeholder="Enter Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Mobile Number</label>
-                    <input type="tel" id="sub-agent-phone" placeholder="10 Digit Mobile" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">City / Location</label>
-                    <input type="text" id="sub-agent-city" placeholder="City" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Role / Designation & Permissions</label>
-                    <select id="sub-agent-role" class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                        <option value="agent">Field Executive / Sub-Agent (Leads, Portals, Calling, Products)</option>
-                        <option value="staff">Telecaller / Back-Office Staff (Leads, Calling, Portals)</option>
-                    </select>
-                    <p class="text-[10px] text-slate-500 mt-1">Note: Bank Payouts and Admin Margins are strictly blocked for all agent/staff roles.</p>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Assign Login Password</label>
-                    <input type="password" id="sub-agent-pass" value="agent123" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
+                <input type="text" id="sub-agent-name" placeholder="Agent Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="tel" id="sub-agent-phone" placeholder="Mobile Number" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="sub-agent-city" placeholder="City" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <select id="sub-agent-role" class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                    <option value="agent">Field Executive / Sub-Agent</option>
+                    <option value="staff">Telecaller / Back-Office Staff</option>
+                </select>
+                <input type="password" id="sub-agent-pass" value="agent123" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('modal-dsa-add-user')" class="px-4 py-2 bg-slate-100 text-xs font-bold rounded-xl">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700">Create Agent ID</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl">Create Agent ID</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal: Bank Direct Portal Lead Tracking Form -->
     <div id="modal-portal-lead" class="fixed inset-0 bg-slate-900/70 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-sky-200">
             <div class="flex justify-between items-center border-b pb-2">
@@ -564,61 +583,41 @@
                     <h3 class="font-bold text-base text-slate-800" id="portal-lead-title">Lead Capture Form</h3>
                     <p class="text-[11px] text-sky-600 font-medium">Mandatory lead tracking before bank portal redirection</p>
                 </div>
-                <button type="button" onclick="closeModal('modal-portal-lead')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-portal-lead')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handlePortalLeadSubmit(event)" class="space-y-3">
                 <input type="hidden" id="portal-target-bank">
                 <input type="hidden" id="portal-target-url">
-                
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Customer Full Name</label>
-                    <input type="text" id="portal-cust-name" placeholder="Enter Customer Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Customer Mobile Number</label>
-                    <input type="tel" id="portal-cust-phone" placeholder="10 Digit Mobile Number" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Loan Category</label>
-                    <select id="portal-cust-product" class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                        <option value="Personal Loan">Personal Loan (PL)</option>
-                        <option value="Home Loan">Home Loan (HL)</option>
-                        <option value="Business Loan">Business Loan (BL)</option>
-                        <option value="Credit Card">Credit Card</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">City / Location</label>
-                    <input type="text" id="portal-cust-city" placeholder="Customer City" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
+                <input type="text" id="portal-cust-name" placeholder="Customer Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="tel" id="portal-cust-phone" placeholder="Customer Mobile Number" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <select id="portal-cust-product" class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                    <option value="Personal Loan">Personal Loan (PL)</option>
+                    <option value="Home Loan">Home Loan (HL)</option>
+                    <option value="Business Loan">Business Loan (BL)</option>
+                    <option value="Credit Card">Credit Card</option>
+                </select>
+                <input type="text" id="portal-cust-city" placeholder="Customer City" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('modal-portal-lead')" class="px-4 py-2 bg-slate-100 text-xs font-bold rounded-xl">Cancel</button>
-                    <button type="submit" class="px-5 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700">Track Lead & Open Portal</button>
+                    <button type="submit" class="px-5 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Track Lead & Open Portal</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal: Record Bank Payout Account Entry (Admin Only) -->
     <div id="modal-add-account-entry" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4 admin-only">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Record Bank Payout & Margin Entry</h3>
-                <button type="button" onclick="closeModal('modal-add-account-entry')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-add-account-entry')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleSaveAccountEntry(event)" class="space-y-3">
                 <input type="text" id="acc-bank-name" placeholder="Bank / NBFC Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <input type="number" id="acc-bank-amount" placeholder="Amount Received from Bank (₹)" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 mb-1">Bank Receipt Date</label>
-                    <input type="date" id="acc-bank-date" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
+                <input type="date" id="acc-bank-date" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <input type="text" id="acc-dsa-name" placeholder="DSA Partner Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <input type="number" id="acc-dsa-amount" placeholder="Commission Paid to DSA (₹)" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-600 mb-1">DSA Processing Date</label>
-                    <input type="date" id="acc-dsa-date" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                </div>
+                <input type="date" id="acc-dsa-date" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('modal-add-account-entry')" class="px-4 py-2 bg-slate-100 text-xs font-bold rounded-xl">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl">Save Entry</button>
@@ -627,12 +626,11 @@
         </div>
     </div>
 
-    <!-- Modal: Change Password Operation -->
     <div id="modal-change-password" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Change Security Password</h3>
-                <button type="button" onclick="closeModal('modal-change-password')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-change-password')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleChangePassword(event)" class="space-y-3">
                 <input type="password" id="pass-current" placeholder="Current Password" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -646,12 +644,11 @@
         </div>
     </div>
 
-    <!-- Modal: Customer Online Apply -->
     <div id="modal-cust-apply" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Online Customer Application</h3>
-                <button type="button" onclick="closeModal('modal-cust-apply')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-cust-apply')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleCustomerApply(event)" class="space-y-3">
                 <input type="text" id="cust-apply-name" placeholder="Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -671,12 +668,11 @@
         </div>
     </div>
 
-    <!-- Modal: Join as DSA -->
     <div id="modal-dsa-apply" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Join as DSA Partner</h3>
-                <button type="button" onclick="closeModal('modal-dsa-apply')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-dsa-apply')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleDSAApply(event)" class="space-y-3">
                 <input type="text" id="dsa-apply-name" placeholder="Full Name / Agency" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -691,12 +687,11 @@
         </div>
     </div>
 
-    <!-- Modal: Add New Lead -->
     <div id="modal-add-lead" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add New Lead</h3>
-                <button type="button" onclick="closeModal('modal-add-lead')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-add-lead')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleAddLead(event)" class="space-y-3">
                 <input type="text" id="lead-name" placeholder="Customer Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -712,12 +707,11 @@
         </div>
     </div>
 
-    <!-- Modal: Add Payout Record (Admin Only) -->
     <div id="modal-add-payout" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4 admin-only">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add DSA Commission Payout</h3>
-                <button type="button" onclick="closeModal('modal-add-payout')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-add-payout')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleAddPayout(event)" class="space-y-3">
                 <input type="text" id="payout-dsa" placeholder="DSA Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
@@ -733,16 +727,17 @@
         </div>
     </div>
 
-    <!-- Modal: Add Calling Lead -->
     <div id="modal-add-calling" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add Telecalling Lead</h3>
-                <button type="button" onclick="closeModal('modal-add-calling')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-add-calling')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleAddCalling(event)" class="space-y-3">
                 <input type="text" id="calling-name" placeholder="Customer Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <input type="tel" id="calling-phone" placeholder="Phone Number" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="calling-location" placeholder="Address / Location" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="calling-employment" placeholder="Employment Type (Salaried/Self-Employed)" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <input type="text" id="calling-agent" placeholder="Caller Agent Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <select id="calling-status" class="w-full border p-2.5 text-sm rounded-xl outline-none">
                     <option value="New Lead">New Lead</option>
@@ -750,32 +745,33 @@
                     <option value="Interested">Interested</option>
                     <option value="Not Interested">Not Interested</option>
                 </select>
-                <input type="text" id="calling-remarks" placeholder="Remarks / Notes" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('modal-add-calling')" class="px-4 py-2 bg-slate-100 text-xs font-bold rounded-xl">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-rose-600 text-white text-xs font-bold rounded-xl">Save Telecalling Lead</button>
+                    <button type="submit" class="px-4 py-2 bg-rose-600 text-white text-xs font-bold rounded-xl">Save Calling Lead</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal: Add Sales Manager (Admin Only) -->
     <div id="modal-add-sm" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 p-4 admin-only">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-lg text-slate-800">Add Sales Manager</h3>
-                <button type="button" onclick="closeModal('modal-add-sm')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+                <button onclick="closeModal('modal-add-sm')" class="text-slate-400 hover:text-slate-600">&times;</button>
             </div>
             <form onsubmit="handleAddSM(event)" class="space-y-3">
                 <input type="text" id="sm-name" placeholder="Full Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                <input type="tel" id="sm-phone" placeholder="Phone Number" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                <input type="email" id="sm-email" placeholder="Email Address" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
-                <input type="text" id="sm-city" placeholder="City / Location" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="sm-product" placeholder="Product (e.g. Personal Loan)" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="sm-bank" placeholder="Bank Name" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="tel" id="sm-phone" placeholder="Mobile Number" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="sm-location" placeholder="Location / City" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="text" id="sm-state" placeholder="State" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
+                <input type="email" id="sm-email" placeholder="Mail ID" required class="w-full border p-2.5 text-sm rounded-xl outline-none">
                 <select id="sm-designation" class="w-full border p-2.5 text-sm rounded-xl outline-none">
                     <option value="SM">SM (Sales Manager)</option>
                     <option value="ASM">ASM (Area Sales Manager)</option>
                     <option value="RAM">RAM (Regional Account Manager)</option>
-                    <option value="ZSM">ZSM (Zonal Sales Manager)</option>
+                    <option value="ZSM">Zonal Sales Manager</option>
                 </select>
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('modal-add-sm')" class="px-4 py-2 bg-slate-100 text-xs font-bold rounded-xl">Cancel</button>
@@ -786,7 +782,27 @@
     </div>
 
     <!-- JAVASCRIPT ENGINE & LOGIC -->
-    <script>
+    <script>// Import the functions you need from the SDKs you need
+               import { initializeApp } from "firebase/app";
+               import { getAnalytics } from "firebase/analytics";
+             // TODO: Add SDKs for Firebase products that you want to use
+             // https://firebase.google.com/docs/web/setup#available-libraries
+
+             // Your web app's Firebase configuration
+             // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+                const firebaseConfig = {
+                apiKey: "AIzaSyAg6g5EsjBjKleRsjwsM7GRW_cYUJgzfv0",
+                authDomain: "finworld-e30c1.firebaseapp.com",
+                projectId: "finworld-e30c1",
+                storageBucket: "finworld-e30c1.firebasestorage.app",
+                messagingSenderId: "121488796262",
+                appId: "1:121488796262:web:25087c9f7fd955d0359ba7",
+                measurementId: "G-33VJPYKZ5G"
+};
+
+             // Initialize Firebase
+             const app = initializeApp(firebaseConfig);
+             const analytics = getAnalytics(app);
         const ROLE_PERMISSIONS = {
             admin: ['sec-dashboard', 'sec-leads', 'sec-dsa-subusers', 'sec-accounts', 'sec-dsa-approval', 'sec-dsa-portal', 'sec-payouts', 'sec-invoices', 'sec-calling', 'sec-users', 'sec-sm', 'sec-products', 'sec-bank-config'],
             dsa: ['sec-dashboard', 'sec-leads', 'sec-dsa-subusers', 'sec-dsa-portal', 'sec-payouts', 'sec-calling', 'sec-products'],
@@ -799,8 +815,7 @@
             return ROLE_PERMISSIONS[role].includes(featureId);
         }
 
-        // Persistent State Management via LocalStorage
-        let defaultAppData = {
+        let appData = {
             currentUser: null,
             leads: [
                 { id: 1, name: "Rahul Verma", phone: "9876543210", product: "Personal Loan", city: "Mumbai", bank: "HDFC Bank", createdBy: "Apex Financial (DSA)", status: "In Progress" },
@@ -816,7 +831,7 @@
                 { id: 1, bank: "HDFC Bank", bankAmount: 12500, bankDate: "2026-07-20", dsaName: "Apex Financial Solutions", dsaAmount: 7500, margin: 5000, status: "Settled" }
             ],
             calling: [
-                { id: 1, name: "Amit Kumar", phone: "9900112233", agent: "Sunita M.", status: "Callback", remarks: "Requested callback tomorrow" }
+                { id: 1, name: "Amit Kumar", phone: "9900112233", location: "Jaipur, Rajasthan", employment: "Salaried", agent: "Sunita M.", status: "Callback" }
             ],
             users: [
                 { userid: "admin", pass: "admin123", name: "Master Admin", role: "admin", parentDSA: "System Root", status: "Active" },
@@ -824,7 +839,7 @@
                 { userid: "agent_01", pass: "agent123", name: "Rohan Sub-Agent", role: "agent", parentDSA: "Apex Financial Solutions", status: "Active" }
             ],
             salesManagers: [
-                { name: "Sanjay Mehta", phone: "9822334455", email: "sanjay@finworld.com", city: "Mumbai", designation: "ZSM" }
+                { name: "Sanjay Mehta", product: "Personal Loan", bank: "HDFC Bank", phone: "9822334455", location: "Mumbai", city: "Mumbai", state: "Maharashtra", email: "sanjay@finworld.com", designation: "ZSM" }
             ],
             products: [
                 { title: "Personal Loan (PL)", rate: "10.5% - 16%", payout: "Up to 1.80%" }
@@ -834,22 +849,12 @@
             ]
         };
 
-        let appData = JSON.parse(localStorage.getItem("finworld_app_data")) || defaultAppData;
-
-        function saveAppData() {
-            localStorage.setItem("finworld_app_data", JSON.stringify(appData));
-        }
-
         function applyRoleUIAdjustments() {
             if (!appData.currentUser) return;
             const isAdmin = appData.currentUser.role === 'admin';
-            
             document.querySelectorAll('.admin-only').forEach(el => {
-                if (isAdmin) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
+                if (isAdmin) el.classList.remove('hidden');
+                else el.classList.add('hidden');
             });
         }
 
@@ -857,7 +862,6 @@
             if (!appData.currentUser) return;
             const role = appData.currentUser.role;
             let firstAllowedSection = null;
-
             const navMap = {
                 'sec-dashboard': 'nav-dashboard',
                 'sec-leads': 'nav-leads',
@@ -894,10 +898,8 @@
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             const colorClass = type === "success" ? "bg-emerald-600 text-white" : type === "error" ? "bg-rose-600 text-white" : "bg-slate-800 text-white";
-            
             toast.className = `p-3.5 rounded-xl shadow-xl text-xs font-semibold transition-all duration-300 pointer-events-auto ${colorClass}`;
             toast.innerHTML = `<div class="flex items-center gap-2"><i class="fa-solid fa-circle-info"></i> <span>${message}</span></div>`;
-            
             container.appendChild(toast);
             setTimeout(() => {
                 toast.classList.add("opacity-0");
@@ -905,49 +907,36 @@
             }, 3000);
         }
 
-        function openModal(id) { 
-            const modal = document.getElementById(id);
-            if (modal) modal.classList.remove("hidden"); 
-        }
-        
-        function closeModal(id) { 
-            const modal = document.getElementById(id);
-            if (modal) modal.classList.add("hidden"); 
-        }
+        function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
+        function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
         function showSection(sectionId) {
             if (appData.currentUser && !isFeatureAccessible(appData.currentUser.role, sectionId)) {
                 showToast("Access Restricted for your Role!", "error");
                 return;
             }
-
             document.querySelectorAll(".content-sec").forEach(el => el.classList.add("hidden"));
             const target = document.getElementById(sectionId);
             if (target) target.classList.remove("hidden");
-
             document.querySelectorAll("aside button").forEach(btn => btn.classList.remove("active-nav"));
             const navBtn = document.getElementById("nav-" + sectionId.replace("sec-", ""));
             if (navBtn) navBtn.classList.add("active-nav");
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             const userid = document.getElementById("login-userid").value;
             const pass = document.getElementById("login-password").value;
-            const selectedRole = document.getElementById("login-role").value;
-
+            const role = document.getElementById("login-role").value;
             const foundUser = appData.users.find(u => u.userid === userid && u.pass === pass);
+            
             if (foundUser || userid === "admin") {
-                appData.currentUser = foundUser || { userid: "admin", name: "Master Admin", role: selectedRole, pass: "admin123", parentDSA: "System Root" };
-
+                appData.currentUser = foundUser || { userid: "admin", name: "Master Admin", role: role, pass: "admin123", parentDSA: "System Root" };
                 document.getElementById("view-login").classList.add("hidden");
                 document.getElementById("main-sidebar").classList.remove("hidden");
-                
-                const sessionBar = document.getElementById("user-session-bar");
-                sessionBar.classList.remove("hidden");
+                document.getElementById("user-session-bar").classList.remove("hidden");
                 document.getElementById("session-user-name").innerText = appData.currentUser.name;
                 document.getElementById("session-user-role").innerText = appData.currentUser.role;
-
                 renderAllData();
                 updateNavigationAccess();
                 showToast("Logged in successfully as " + appData.currentUser.name, "success");
@@ -965,6 +954,138 @@
             showToast("Logged out.", "info");
         }
 
+        // ================= SMART AUTO-FETCH & PARSING ENGINE =================
+        function handleDragOver(e, type) {
+            e.preventDefault();
+            document.getElementById(`${type}-dropzone`).classList.add('dragover');
+        }
+
+        function handleDragLeave(e, type) {
+            e.preventDefault();
+            document.getElementById(`${type}-dropzone`).classList.remove('dragover');
+        }
+
+        function handleFileDrop(e, type) {
+            e.preventDefault();
+            document.getElementById(`${type}-dropzone`).classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                processUploadedFile(e.dataTransfer.files[0], type);
+            }
+        }
+
+        function handleFileSelect(e, type) {
+            if (e.target.files && e.target.files.length > 0) {
+                processUploadedFile(e.target.files[0], type);
+            }
+        }
+
+        function processUploadedFile(file, type) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const content = evt.target.result;
+                parseAndImportData(content, type, file.name);
+            };
+            reader.readAsText(file);
+        }
+
+        function processRawCallingData() {
+            const text = document.getElementById("calling-raw-text").value;
+            if (!text.trim()) {
+                showToast("Please enter or paste data first!", "error");
+                return;
+            }
+            parseAndImportData(text, 'calling', 'Raw Text Input');
+            document.getElementById("calling-raw-text").value = "";
+        }
+
+        function processRawSMData() {
+            const text = document.getElementById("sm-raw-text").value;
+            if (!text.trim()) {
+                showToast("Please enter or paste data first!", "error");
+                return;
+            }
+            parseAndImportData(text, 'sm', 'Raw Text Input');
+            document.getElementById("sm-raw-text").value = "";
+        }
+
+        // Smart Extraction Logic to Auto-Fetch Required Fields & Auto-Delete Extra Garbage Noise
+        function parseAndImportData(rawText, targetType, sourceName) {
+            const lines = rawText.split(/\r?\n/);
+            let importedCount = 0;
+
+            lines.forEach(line => {
+                if (!line.trim() || line.toLowerCase().includes('name') && line.toLowerCase().includes('mobile')) return; // skip header
+
+                if (targetType === 'calling') {
+                    // Extract Calling Data: Name, Address/Location, Employment Type, Mobile
+                    // Regex for 10 digit mobile number
+                    const phoneMatch = line.match(/\b[6-9]\d{9}\b/);
+                    if (!phoneMatch) return; // skip if no valid mobile found (auto-delete non-matching noise)
+                    const phone = phoneMatch[0];
+
+                    // Email cleanup or removal
+                    const cleanLine = line.replace(phone, '').trim();
+                    const parts = cleanLine.split(/,|\t|\||-/).map(p => p.trim()).filter(p => p.length > 0);
+
+                    const name = parts[0] || "Imported Customer";
+                    const location = parts[1] || "Bhilwara, Rajasthan";
+                    const employment = parts[2] || (line.toLowerCase().includes('salaried') ? 'Salaried' : 'Self-Employed');
+
+                    appData.calling.unshift({
+                        id: Date.now() + Math.random(),
+                        name: name,
+                        phone: phone,
+                        location: location,
+                        employment: employment,
+                        agent: appData.currentUser ? appData.currentUser.name : "System Auto",
+                        status: "New Lead"
+                    });
+                    importedCount++;
+                } 
+                else if (targetType === 'sm') {
+                    // Extract SM Data: SM Name, Product, Bank Name, Mobile Number, Location, City, State, Mail ID
+                    const phoneMatch = line.match(/\b[6-9]\d{9}\b/);
+                    const emailMatch = line.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+
+                    const phone = phoneMatch ? phoneMatch[0] : "9800000000";
+                    const email = emailMatch ? emailMatch[0] : "sm@finworld.com";
+
+                    let cleanLine = line;
+                    if (phoneMatch) cleanLine = cleanLine.replace(phoneMatch[0], '');
+                    if (emailMatch) cleanLine = cleanLine.replace(emailMatch[0], '');
+
+                    const parts = cleanLine.split(/,|\t|\||-/).map(p => p.trim()).filter(p => p.length > 0);
+
+                    const name = parts[0] || "Sales Manager";
+                    const product = parts[1] || "Personal Loan";
+                    const bankName = parts[2] || "HDFC Bank";
+                    const location = parts[3] || "Bhilwara";
+                    const city = parts[4] || location;
+                    const state = parts[5] || "Rajasthan";
+
+                    appData.salesManagers.unshift({
+                        name: name,
+                        product: product,
+                        bank: bankName,
+                        phone: phone,
+                        location: location,
+                        city: city,
+                        state: state,
+                        email: email,
+                        designation: "SM"
+                    });
+                    importedCount++;
+                }
+            });
+
+            if (importedCount > 0) {
+                renderAllData();
+                showToast(`Successfully auto-fetched & imported ${importedCount} records from ${sourceName}! Unwanted noise auto-deleted.`, "success");
+            } else {
+                showToast("Could not auto-detect valid records or mobile numbers. Please check format.", "error");
+            }
+        }
+
         function handleDSACreateUser(e) {
             e.preventDefault();
             const name = document.getElementById("sub-agent-name").value;
@@ -972,31 +1093,21 @@
             const city = document.getElementById("sub-agent-city").value;
             const role = document.getElementById("sub-agent-role").value;
             const pass = document.getElementById("sub-agent-pass").value;
-
             const agentId = "agent_" + Math.floor(100 + Math.random() * 900);
-            const parentDsaName = appData.currentUser ? appData.currentUser.name : "DSA Master";
-
+            
             appData.users.push({
-                userid: agentId,
-                pass: pass,
-                name: name,
-                role: role,
-                parentDSA: parentDsaName,
-                phone: phone,
-                city: city,
-                status: "Active"
+                userid: agentId, pass: pass, name: name, role: role,
+                parentDSA: appData.currentUser ? appData.currentUser.name : "DSA Master",
+                phone: phone, city: city, status: "Active"
             });
-
-            saveAppData();
             closeModal("modal-dsa-add-user");
             e.target.reset();
             renderAllData();
-            showToast(`Sub-Agent Account Created! Login ID: ${agentId}`, "success");
+            showToast(`Sub-Agent Created! ID: ${agentId}`, "success");
         }
 
         function handleAddLead(e) {
             e.preventDefault();
-            const creator = appData.currentUser ? `${appData.currentUser.name} (${appData.currentUser.role.toUpperCase()})` : "Direct";
             appData.leads.unshift({
                 id: Date.now(),
                 name: document.getElementById("lead-name").value,
@@ -1004,65 +1115,48 @@
                 product: document.getElementById("lead-product").value,
                 city: document.getElementById("lead-city").value,
                 bank: document.getElementById("lead-bank").value,
-                createdBy: creator,
+                createdBy: appData.currentUser ? appData.currentUser.name : "Direct",
                 status: "In Progress"
             });
-            saveAppData();
             closeModal("modal-add-lead");
             e.target.reset();
             renderAllData();
-            showToast("New Lead Created!", "success");
+            showToast("Lead Created!", "success");
         }
 
         function handleAddPayout(e) {
             e.preventDefault();
-            const dsa = document.getElementById("payout-dsa").value;
-            const bank = document.getElementById("payout-bank").value;
-            const customer = document.getElementById("payout-cust").value;
-            const amount = Number(document.getElementById("payout-amount").value);
-            const earned = Number(document.getElementById("payout-earned").value);
-            const today = new Date().toISOString().split('T')[0];
-
             appData.payouts.unshift({
                 id: Date.now(),
-                date: today,
-                dsa: dsa,
-                bank: bank,
+                date: new Date().toISOString().split('T')[0],
+                dsa: document.getElementById("payout-dsa").value,
+                bank: document.getElementById("payout-bank").value,
                 category: "PL",
-                customer: customer,
-                disbursed: amount,
-                payout: earned,
+                customer: document.getElementById("payout-cust").value,
+                disbursed: Number(document.getElementById("payout-amount").value),
+                payout: Number(document.getElementById("payout-earned").value),
                 status: "Paid"
             });
-
-            saveAppData();
             closeModal("modal-add-payout");
             e.target.reset();
             renderAllData();
-            showToast("Payout record added successfully!", "success");
+            showToast("Payout record added!", "success");
         }
 
         function handleSaveAccountEntry(e) {
             e.preventDefault();
-            const bankName = document.getElementById("acc-bank-name").value;
             const bankAmt = Number(document.getElementById("acc-bank-amount").value);
-            const bankDate = document.getElementById("acc-bank-date").value;
-            const dsaName = document.getElementById("acc-dsa-name").value;
             const dsaAmt = Number(document.getElementById("acc-dsa-amount").value);
-            const margin = bankAmt - dsaAmt;
-
             appData.accountsLedger.unshift({
                 id: Date.now(),
-                bank: bankName,
+                bank: document.getElementById("acc-bank-name").value,
                 bankAmount: bankAmt,
-                bankDate: bankDate,
-                dsaName: dsaName,
+                bankDate: document.getElementById("acc-bank-date").value,
+                dsaName: document.getElementById("acc-dsa-name").value,
                 dsaAmount: dsaAmt,
-                margin: margin,
+                margin: bankAmt - dsaAmt,
                 status: "Settled"
             });
-
-            saveAppData();
             closeModal("modal-add-account-entry");
             e.target.reset();
             renderAllData();
@@ -1072,20 +1166,11 @@
         function handleChangePassword(e) {
             e.preventDefault();
             const newP = document.getElementById("pass-new").value;
-            const confP = document.getElementById("pass-confirm").value;
-
-            if (newP !== confP) {
-                showToast("New passwords do not match!", "error");
+            if (newP !== document.getElementById("pass-confirm").value) {
+                showToast("Passwords do not match!", "error");
                 return;
             }
-
-            if (appData.currentUser) {
-                appData.currentUser.pass = newP;
-                const userObj = appData.users.find(u => u.userid === appData.currentUser.userid);
-                if (userObj) userObj.pass = newP;
-            }
-
-            saveAppData();
+            if (appData.currentUser) appData.currentUser.pass = newP;
             closeModal("modal-change-password");
             e.target.reset();
             showToast("Password updated successfully!", "success");
@@ -1103,12 +1188,10 @@
                 createdBy: "Public Customer Apply",
                 status: "New Application"
             });
-
-            saveAppData();
             closeModal("modal-cust-apply");
             e.target.reset();
             renderAllData();
-            showToast("Customer Application Received!", "success");
+            showToast("Application Received!", "success");
         }
 
         function handleDSAApply(e) {
@@ -1122,39 +1205,30 @@
                 bank: "Pending",
                 status: "Pending"
             });
-
-            saveAppData();
             closeModal("modal-dsa-apply");
             e.target.reset();
             renderAllData();
-            showToast("DSA Application Submitted for Review!", "success");
+            showToast("DSA Application Submitted!", "success");
         }
 
         function handlePortalLeadSubmit(e) {
             e.preventDefault();
-            const bank = document.getElementById("portal-target-bank").value;
             const url = document.getElementById("portal-target-url").value;
-
             appData.leads.unshift({
                 id: Date.now(),
                 name: document.getElementById("portal-cust-name").value,
                 phone: document.getElementById("portal-cust-phone").value,
                 product: document.getElementById("portal-cust-product").value,
                 city: document.getElementById("portal-cust-city").value,
-                bank: bank,
-                createdBy: appData.currentUser ? `${appData.currentUser.name} (Portal Link)` : "Bank Portal Link",
+                bank: document.getElementById("portal-target-bank").value,
+                createdBy: "Portal Link",
                 status: "Redirected to Bank"
             });
-
-            saveAppData();
             closeModal("modal-portal-lead");
             e.target.reset();
             renderAllData();
-            showToast("Lead Tracked! Redirecting to Bank Portal...", "success");
-
-            if (url) {
-                window.open(url, "_blank");
-            }
+            showToast("Lead Tracked! Opening Portal...", "success");
+            if (url) window.open(url, "_blank");
         }
 
         function openPortalModal(bankName, utmUrl) {
@@ -1166,26 +1240,17 @@
 
         function handleSaveBankMaster(e) {
             e.preventDefault();
-            const name = document.getElementById("bank-name").value;
-            const category = document.getElementById("bank-category").value;
-            const type = document.getElementById("bank-type").value;
-            const userid = document.getElementById("bank-user-id").value;
-            const pass = document.getElementById("bank-password").value;
-            const utm = document.getElementById("bank-utm").value;
-            const editIdx = parseInt(document.getElementById("edit-bank-index").value);
-
-            if (editIdx >= 0 && editIdx < appData.banks.length) {
-                appData.banks[editIdx] = { name, category, type, userid, pass, utm };
-                document.getElementById("edit-bank-index").value = "-1";
-                showToast("Bank Configuration Updated!", "success");
-            } else {
-                appData.banks.push({ name, category, type, userid, pass, utm });
-                showToast("New Bank Master Saved!", "success");
-            }
-
-            saveAppData();
+            appData.banks.push({
+                name: document.getElementById("bank-name").value,
+                category: document.getElementById("bank-category").value,
+                type: document.getElementById("bank-type").value,
+                userid: document.getElementById("bank-user-id").value,
+                pass: document.getElementById("bank-password").value,
+                utm: document.getElementById("bank-utm").value
+            });
             e.target.reset();
             renderAllData();
+            showToast("Bank Master Saved!", "success");
         }
 
         function handleAddCalling(e) {
@@ -1194,27 +1259,30 @@
                 id: Date.now(),
                 name: document.getElementById("calling-name").value,
                 phone: document.getElementById("calling-phone").value,
+                location: document.getElementById("calling-location").value,
+                employment: document.getElementById("calling-employment").value,
                 agent: document.getElementById("calling-agent").value,
-                status: document.getElementById("calling-status").value,
-                remarks: document.getElementById("calling-remarks").value
+                status: document.getElementById("calling-status").value
             });
-            saveAppData();
             closeModal("modal-add-calling");
             e.target.reset();
             renderAllData();
-            showToast("Telecalling Lead Added!", "success");
+            showToast("Calling Lead Added!", "success");
         }
 
         function handleAddSM(e) {
             e.preventDefault();
             appData.salesManagers.unshift({
                 name: document.getElementById("sm-name").value,
+                product: document.getElementById("sm-product").value,
+                bank: document.getElementById("sm-bank").value,
                 phone: document.getElementById("sm-phone").value,
+                location: document.getElementById("sm-location").value,
+                city: document.getElementById("sm-location").value,
+                state: document.getElementById("sm-state").value,
                 email: document.getElementById("sm-email").value,
-                city: document.getElementById("sm-city").value,
                 designation: document.getElementById("sm-designation").value
             });
-            saveAppData();
             closeModal("modal-add-sm");
             e.target.reset();
             renderAllData();
@@ -1223,7 +1291,7 @@
 
         function filterSMByLocation() {
             const term = document.getElementById("sm-search-location").value.toLowerCase();
-            const filtered = appData.salesManagers.filter(s => s.city.toLowerCase().includes(term) || s.name.toLowerCase().includes(term));
+            const filtered = appData.salesManagers.filter(s => s.city.toLowerCase().includes(term) || s.name.toLowerCase().includes(term) || s.bank.toLowerCase().includes(term));
             renderSMCards(filtered);
         }
 
@@ -1237,9 +1305,11 @@
                             <h4 class="font-bold text-slate-800 text-sm">${s.name}</h4>
                             <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded uppercase">${s.designation}</span>
                         </div>
-                        <span class="text-xs text-slate-500 font-semibold"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i>${s.city}</span>
+                        <span class="text-xs text-slate-500 font-semibold"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i>${s.city}, ${s.state || ''}</span>
                     </div>
-                    <div class="text-xs text-slate-600 space-y-1 pt-1 border-t border-slate-100">
+                    <div class="text-xs text-slate-600 space-y-1 pt-1 border-t border-slate-100 font-medium">
+                        <p><i class="fa-solid fa-shapes text-orange-500 w-4"></i> Product: <span class="text-slate-800 font-bold">${s.product}</span></p>
+                        <p><i class="fa-solid fa-building-columns text-sky-600 w-4"></i> Bank: <span class="text-slate-800 font-bold">${s.bank}</span></p>
                         <p><i class="fa-solid fa-phone text-slate-400 w-4"></i> ${s.phone}</p>
                         <p><i class="fa-solid fa-envelope text-slate-400 w-4"></i> ${s.email}</p>
                     </div>
@@ -1253,18 +1323,11 @@
                 app.status = "Approved";
                 const dsaUserId = "dsa_" + app.name.toLowerCase().replace(/[^a-z0-9]/g, "").substring(0, 8);
                 appData.users.push({
-                    userid: dsaUserId,
-                    pass: "dsa123",
-                    name: app.name,
-                    role: "dsa",
-                    parentDSA: "Self",
-                    phone: app.phone,
-                    city: app.city,
-                    status: "Active"
+                    userid: dsaUserId, pass: "dsa123", name: app.name, role: "dsa",
+                    parentDSA: "Self", phone: app.phone, city: app.city, status: "Active"
                 });
-                saveAppData();
                 renderAllData();
-                showToast(`DSA Approved! Login ID: ${dsaUserId}`, "success");
+                showToast(`DSA Approved! ID: ${dsaUserId}`, "success");
             }
         }
 
@@ -1283,16 +1346,13 @@
             document.getElementById("acc-total-bank").innerText = "₹" + totalBankRecv.toLocaleString("en-IN");
             document.getElementById("acc-total-dsa").innerText = "₹" + totalDsaPaid.toLocaleString("en-IN");
             document.getElementById("acc-total-margin").innerText = "₹" + totalNetMargin.toLocaleString("en-IN");
-
             document.getElementById("dash-bank-payout").innerText = "₹" + totalBankRecv.toLocaleString("en-IN");
             document.getElementById("dash-dsa-payout").innerText = "₹" + totalDsaPaid.toLocaleString("en-IN");
             document.getElementById("dash-net-margin").innerText = "₹" + totalNetMargin.toLocaleString("en-IN");
             document.getElementById("totalPortfolio").innerText = "₹" + totalDisbursed.toLocaleString("en-IN");
 
             const subAgents = appData.users.filter(u => u.role === 'agent' || u.role === 'staff');
-            
-            const tbodySubUsers = document.getElementById("table-dsa-subusers");
-            tbodySubUsers.innerHTML = subAgents.map(a => `
+            document.getElementById("table-dsa-subusers").innerHTML = subAgents.map(a => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 font-mono font-bold text-indigo-600">${a.userid}</td>
                     <td class="p-3 font-semibold text-slate-800">${a.name}</td>
@@ -1300,12 +1360,11 @@
                     <td class="p-3"><span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase">${a.role}</span></td>
                     <td class="p-3">${a.city || '-'}</td>
                     <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-bold">${a.status}</span></td>
-                    <td class="p-3"><button onclick="showToast('Sub-Agent Access Active', 'info')" class="text-xs text-indigo-600 font-bold hover:underline">Manage</button></td>
+                    <td class="p-3"><button onclick="showToast('Active', 'info')" class="text-xs text-indigo-600 font-bold hover:underline">Manage</button></td>
                 </tr>
             `).join("");
 
-            const tbodyLeads = document.getElementById("table-leads");
-            tbodyLeads.innerHTML = appData.leads.map(l => `
+            document.getElementById("table-leads").innerHTML = appData.leads.map(l => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 font-semibold text-slate-800">${l.name}</td>
                     <td class="p-3">${l.phone}</td>
@@ -1314,12 +1373,11 @@
                     <td class="p-3 font-medium text-sky-700">${l.bank}</td>
                     <td class="p-3 text-xs text-slate-500 font-medium">${l.createdBy || 'Direct'}</td>
                     <td class="p-3"><span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded text-xs font-bold">${l.status}</span></td>
-                    <td class="p-3"><button onclick="showToast('Lead Status Updated', 'info')" class="text-sky-600 hover:underline font-bold text-xs">Update</button></td>
+                    <td class="p-3"><button onclick="showToast('Updated', 'info')" class="text-sky-600 hover:underline font-bold text-xs">Update</button></td>
                 </tr>
             `).join("");
 
-            const tbodyAccounts = document.getElementById("table-accounts-ledger");
-            tbodyAccounts.innerHTML = appData.accountsLedger.map(a => `
+            document.getElementById("table-accounts-ledger").innerHTML = appData.accountsLedger.map(a => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 font-bold text-slate-800">${a.bank}</td>
                     <td class="p-3 font-semibold text-emerald-600">₹${Number(a.bankAmount).toLocaleString("en-IN")}</td>
@@ -1331,22 +1389,18 @@
                 </tr>
             `).join("");
 
-            const tbodyApprovals = document.getElementById("table-dsa-approvals");
-            tbodyApprovals.innerHTML = appData.dsaApprovals.map(a => `
+            document.getElementById("table-dsa-approvals").innerHTML = appData.dsaApprovals.map(a => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 font-semibold text-slate-800">${a.name}</td>
                     <td class="p-3">${a.phone} <br><span class="text-xs text-slate-400">${a.city}</span></td>
                     <td class="p-3 text-xs text-slate-600">${a.kyc}</td>
                     <td class="p-3 text-xs text-slate-600">${a.bank}</td>
                     <td class="p-3"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs font-bold">${a.status}</span></td>
-                    <td class="p-3">
-                        ${a.status === 'Pending' ? `<button onclick="approveDSA(${a.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-lg">Approve</button>` : `<span class="text-xs text-emerald-600 font-bold">Approved</span>`}
-                    </td>
+                    <td class="p-3">${a.status === 'Pending' ? `<button onclick="approveDSA(${a.id})" class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-lg">Approve</button>` : `<span class="text-xs text-emerald-600 font-bold">Approved</span>`}</td>
                 </tr>
             `).join("");
 
-            const gridBanks = document.getElementById("grid-dsa-banks");
-            gridBanks.innerHTML = appData.banks.map(b => `
+            document.getElementById("grid-dsa-banks").innerHTML = appData.banks.map(b => `
                 <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-slate-800 text-base">${b.name}</span>
@@ -1360,8 +1414,7 @@
                 </div>
             `).join("");
 
-            const tbodyPayouts = document.getElementById("table-payouts");
-            tbodyPayouts.innerHTML = appData.payouts.map(p => `
+            document.getElementById("table-payouts").innerHTML = appData.payouts.map(p => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 text-xs text-slate-500">${p.date}</td>
                     <td class="p-3 font-semibold text-slate-800">${p.dsa}</td>
@@ -1374,19 +1427,18 @@
                 </tr>
             `).join("");
 
-            const tbodyCalling = document.getElementById("table-calling");
-            tbodyCalling.innerHTML = appData.calling.map(c => `
+            document.getElementById("table-calling").innerHTML = appData.calling.map(c => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 font-semibold text-slate-800">${c.name}</td>
                     <td class="p-3 font-mono">${c.phone}</td>
-                    <td class="p-3 text-xs text-slate-600 font-medium">${c.agent}</td>
+                    <td class="p-3 text-xs text-slate-600 font-medium">${c.location}</td>
+                    <td class="p-3"><span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-bold">${c.employment}</span></td>
+                    <td class="p-3 text-xs text-slate-500">${c.agent}</td>
                     <td class="p-3"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-xs font-bold">${c.status}</span></td>
-                    <td class="p-3 text-xs text-slate-500">${c.remarks}</td>
                 </tr>
             `).join("");
 
-            const tbodyUsers = document.getElementById("table-users");
-            tbodyUsers.innerHTML = appData.users.map(u => `
+            document.getElementById("table-users").innerHTML = appData.users.map(u => `
                 <tr class="hover:bg-slate-50">
                     <td class="p-3 font-mono font-bold text-sky-700">${u.userid}</td>
                     <td class="p-3 font-mono text-slate-500 font-bold">${u.pass}</td>
@@ -1398,9 +1450,18 @@
             `).join("");
 
             renderSMCards(appData.salesManagers);
+            // Firebase se Data Fetch Karne Ka Function
+               function fetchLeadsFromFirebase() {
+               db.collection("leads").get().then((querySnapshot) => {
+               appData.leads = [];
+               querySnapshot.forEach((doc) => {
+               appData.leads.push({ id: doc.id, ...doc.data() });
+        });
+        renderAllData();
+    });
+}
 
-            const gridProducts = document.getElementById("grid-products");
-            gridProducts.innerHTML = appData.products.map(p => `
+            document.getElementById("grid-products").innerHTML = appData.products.map(p => `
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
                     <h4 class="font-bold text-slate-800 text-base">${p.title}</h4>
                     <div class="text-xs space-y-1 text-slate-600 border-t pt-2">

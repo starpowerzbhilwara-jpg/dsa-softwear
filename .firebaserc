@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "dsa-softwear"
-  }
+    "default": "dsa-softwear",
+    "yes": "dsa-softwear"
+  },
+  "targets": {},
+  "etags": {}
 }
